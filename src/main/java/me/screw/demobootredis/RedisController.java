@@ -3,8 +3,11 @@ package me.screw.demobootredis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 @Controller
 public class RedisController {
@@ -31,4 +34,24 @@ public class RedisController {
         redisTemplate.opsForValue().set(key, event.getValue());
         return "key is " + key + " saved value is " + redisTemplate.opsForValue().get(key);
     }
+
+    @PostMapping("/redis/token")
+    @ResponseBody
+    public void initializeToken() throws Exception {
+        // java enum으로 1000을 쓸 수 있나
+        UUID uuid = null;
+        for(int i=0;i<1000;i++) {
+            uuid = randomUUID();
+            redisTemplate.opsForList().leftPush("token", uuid);
+        }
+    }
+
+    @GetMapping("/redis/token")
+    @ResponseBody
+    public long getToken() throws Exception {
+        Long token = redisTemplate.opsForList().size("token");
+        redisTemplate.opsForList().rightPop("token");
+        return token - redisTemplate.opsForList().size("token");
+    }
+
 }

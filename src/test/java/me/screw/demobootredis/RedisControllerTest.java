@@ -51,4 +51,18 @@ public class RedisControllerTest {
             .andExpect(content().string("value is screw"))
         ;
     }
+
+    @Test
+    public void initializeTokenTest() throws Exception {
+        mockMvc.perform(post("/redis/token"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getTokenTest() throws Exception {
+        redisTemplate.opsForList().leftPush("token","1");
+        mockMvc.perform(get("/redis/token"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
+    }
 }

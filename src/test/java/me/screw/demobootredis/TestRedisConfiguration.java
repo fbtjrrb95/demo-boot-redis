@@ -11,7 +11,11 @@ public class TestRedisConfiguration {
 
     private RedisServer redisServer;
     public TestRedisConfiguration(RedisProperties redisProperties) {
-        this.redisServer = RedisServer.builder().port(redisProperties.getRedisPort()).setting("maxheap 128mb").build();
+        this.redisServer = RedisServer.builder()
+                .port(redisProperties.getRedisPort())
+                .setting("requirepass screw")
+                .setting("maxheap 128mb")
+                .build();
     }
 
     @PostConstruct
