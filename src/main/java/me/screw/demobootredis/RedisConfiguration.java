@@ -41,9 +41,9 @@ public class RedisConfiguration {
         RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
         // key Serializer
-//        template.setKeySerializer(new StringRedisSerializer());
+        template.setKeySerializer(new StringRedisSerializer());
         // value Serializer
-//        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Event.class));
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Event.class));
         return template;
     }
 }
