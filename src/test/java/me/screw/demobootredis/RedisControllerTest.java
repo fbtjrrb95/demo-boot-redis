@@ -36,8 +36,8 @@ public class RedisControllerTest {
     @Test
     public void postTest() throws Exception {
         mockMvc.perform(post("/redis/post")
-        .param("key","me")
-        .param("value", "screw"))
+                .param("key","me")
+                .param("value", "screw"))
                 .andExpect(content().string("key is me saved value is screw"))
         ;
     }
