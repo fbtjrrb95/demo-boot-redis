@@ -43,7 +43,8 @@ public class RedisConfiguration {
         // key Serializer
         template.setKeySerializer(new StringRedisSerializer());
         // value Serializer
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Event.class));
+//        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Event.class));
+        template.setValueSerializer(new StringRedisSerializer());
         return template;
     }
 }

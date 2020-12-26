@@ -63,6 +63,7 @@ public class RedisControllerTest {
         redisTemplate.opsForList().leftPush("token","1");
         mockMvc.perform(get("/redis/token"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("1"));
+                .andExpect(content().string("1"))
+                ;
     }
 }

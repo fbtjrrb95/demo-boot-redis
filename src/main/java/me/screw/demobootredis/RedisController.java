@@ -42,7 +42,7 @@ public class RedisController {
         UUID uuid = null;
         for(int i=0;i<1000;i++) {
             uuid = randomUUID();
-            redisTemplate.opsForList().leftPush("token", uuid);
+            redisTemplate.opsForList().leftPush("token", uuid.toString());
         }
     }
 
