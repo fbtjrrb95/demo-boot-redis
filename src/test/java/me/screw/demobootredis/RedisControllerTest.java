@@ -54,7 +54,7 @@ public class RedisControllerTest {
 
     @Test
     public void initializeTokenTest() throws Exception {
-        mockMvc.perform(post("/redis/token"))
+        mockMvc.perform(post("/redis/token2"))
                 .andExpect(status().isOk());
     }
 

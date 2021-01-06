@@ -5,15 +5,20 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 
 @Controller
+@Transactional
 public class RedisController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    CouponRepository couponRepository;
 
     @GetMapping("/form")
     public String getForm() throws Exception {
@@ -35,7 +40,7 @@ public class RedisController {
         return "key is " + key + " saved value is " + redisTemplate.opsForValue().get(key);
     }
 
-    @PostMapping("/redis/token")
+    @PostMapping("/redis/token2")
     @ResponseBody
     public void initializeToken() throws Exception {
         // java enum으로 1000을 쓸 수 있나
@@ -49,9 +54,16 @@ public class RedisController {
     @GetMapping("/redis/token")
     @ResponseBody
     public long getToken() throws Exception {
-        Long token = redisTemplate.opsForList().size("token");
-        redisTemplate.opsForList().rightPop("token");
-        return token - redisTemplate.opsForList().size("token");
+        Long totalSize = redisTemplate.opsForList().size("token");
+        String token = (String)redisTemplate.opsForList().rightPop("token");
+
+        //TODO: DB Coupons에 user 이름 저장하는 로직
+//        Coupons coupons = new Coupons();
+//        coupons.setCoupon("test-coupon");
+//        coupons.setUsername("seokkyu");
+//        couponRepository.save(coupons);
+
+        return totalSize - redisTemplate.opsForList().size("token");
     }
 
 }

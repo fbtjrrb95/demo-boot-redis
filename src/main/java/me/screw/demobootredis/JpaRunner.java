@@ -12,14 +12,20 @@ import javax.persistence.EntityManager;
 @Transactional
 public class JpaRunner implements ApplicationRunner {
 
+    // jpa 사용
+//    @Autowired
+//    EntityManager entityManager;
+
+    // spring data jpa 사용
     @Autowired
-    EntityManager entityManager;
+    CouponRepository couponRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Account account = new Account();
-        account.setCoupon("coupon");
-        account.setUsername("seokkyu");
-        entityManager.persist(account);
+        Coupons coupons = new Coupons();
+        coupons.setCoupon("coupon");
+        coupons.setUsername("seokkyu");
+//        entityManager.persist(coupons);
+        couponRepository.save(coupons);
     }
 }
