@@ -3,6 +3,7 @@ package me.screw.demobootredis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -16,11 +17,14 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.embedded.RedisServer;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.time.Duration;
 
 @Configuration
-@EnableRedisRepositories
+//@EnableRedisRepositories
 public class RedisConfiguration {
     @Autowired
     RedisProperties redisProperties;
@@ -43,8 +47,9 @@ public class RedisConfiguration {
         // key Serializer
         template.setKeySerializer(new StringRedisSerializer());
         // value Serializer
-//        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Event.class));
         template.setValueSerializer(new StringRedisSerializer());
         return template;
     }
+
+
 }

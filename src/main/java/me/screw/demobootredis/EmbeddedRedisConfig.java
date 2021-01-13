@@ -1,16 +1,20 @@
 package me.screw.demobootredis;
 
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-@TestConfiguration
-public class TestRedisConfiguration {
+@Component
+public class EmbeddedRedisConfig {
+
+    @Autowired
+    RedisProperties redisProperties;
 
     private RedisServer redisServer;
-    public TestRedisConfiguration(RedisProperties redisProperties) {
+    public EmbeddedRedisConfig(RedisProperties redisProperties) {
         this.redisServer = RedisServer.builder()
                 .port(redisProperties.getRedisPort())
                 .setting("requirepass screw")
