@@ -14,4 +14,12 @@ import org.springframework.stereotype.Component;
 public class Event{
     private String username;
     private String password;
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

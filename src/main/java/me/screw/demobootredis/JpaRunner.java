@@ -18,15 +18,15 @@ public class JpaRunner implements ApplicationRunner {
 //    EntityManager entityManager;
 
     // spring data jpa 사용
-    @Autowired
-    CouponRepository couponRepository;
-
+//    @Autowired
+//    CouponRepository couponRepository;
+//
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Coupons coupons = new Coupons();
-        coupons.setCoupon("coupon");
-        coupons.setUsername("seokkyu");
+//        Coupons coupons = new Coupons();
+//        coupons.setCoupon("coupon");
+//        coupons.setUsername("seokkyu");
 //        entityManager.persist(coupons);
-        couponRepository.save(coupons);
+//        couponRepository.save(coupons);
     }
 }

@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>submit</title>
+    <title>Success</title>
 </head>
 <body>
-<form action="#" th:action="@{/redis/token}" th:object="${event}" method="post">
+<form action="#" th:action="@{/redis/coupons}" th:object="${event}" method="get" >
     username : <input type="text" th:field="*{username}">
     password : <input type="text" th:field="*{password}">
-    <input type="submit" value="Submit"/>
+    <input type="submit" value="get"/>
 </form>
 </body>
 </html>

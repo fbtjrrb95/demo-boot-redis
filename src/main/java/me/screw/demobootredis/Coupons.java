@@ -23,4 +23,11 @@ public class Coupons {
 
     private String coupon;
 
+    @Override
+    public String toString() {
+        return "Coupons{" +
+                "token='" + token + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }
