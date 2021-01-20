@@ -50,4 +50,38 @@ public class RedisControllerTest {
                 .andExpect(view().name("events/form"))
         ;
     }
+
+    @Test
+    public void getCouponsTest() throws Exception {
+
+        redisTemplate.opsForList().leftPush("token", "1234");
+        Coupons coupons = new Coupons();
+        coupons.setUsername("seokkyu");
+        coupons.setToken((String)redisTemplate.opsForList().rightPop("token"));
+        redisTemplate.opsForList().leftPush("coupons",coupons.toString());
+
+        mockMvc.perform(get("/redis/coupons")
+                    .param("username","seokkyu")
+                    .param("password","1234"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("good!"))
+                ;
+    }
+
+    @Test
+    public void getCouponsFailTest() throws Exception {
+
+        redisTemplate.opsForList().leftPush("token", "1234");
+        Coupons coupons = new Coupons();
+        coupons.setUsername("screw");
+        coupons.setToken((String)redisTemplate.opsForList().rightPop("token"));
+        redisTemplate.opsForList().leftPush("coupons",coupons.toString());
+
+        mockMvc.perform(get("/redis/coupons")
+                .param("username","seokkyu")
+                .param("password","1234"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("no!!"))
+        ;
+    }
 }

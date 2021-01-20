@@ -73,7 +73,6 @@ public class RedisController {
         List<String> list = (List<String>) redisTemplate.opsForList().range("coupons", 0, -1);
         assert list != null;
         for(String coupon: list){
-            System.out.println(coupon);
             if(coupon.contains(username)) return "good!";
         }
         return "no!!";
