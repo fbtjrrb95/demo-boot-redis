@@ -46,18 +46,35 @@ public class RedisController {
         return "events/form";
     }
 
+    /**
+     *
+     * @param event username과 password과 form data로 넘어온다.
+     * @return 만약 redis token list에서 발급받을 수 있는 token이 존재한다면 redist coupons list에 저장하고 success view
+     * @return 그렇지 않다면 fail view
+     * @throws Exception
+     */
     @PostMapping("/redis/token")
     public String getToken(@ModelAttribute Event event) throws Exception {
-        System.out.println(event);
         String username = event.getUsername();
         String password = event.getPassword();
 
-        Long totalSize = redisTemplate.opsForList().size("token");
+        long totalSize = redisTemplate.opsForList().size("token");
         if(totalSize > 0l) {
+
             String token = (String) redisTemplate.opsForList().rightPop("token");
             Coupons coupons = new Coupons();
-            coupons.setToken(token);
+            coupons.setCouponnumber(token);
             coupons.setUsername(username);
+
+            Users users = new Users();
+            users.setUsername(username);
+            users.setPassword(password);
+            users.setCoupons(coupons);
+            coupons.setUsers(users);
+            // TODO: persist to database
+
+            couponRepository.save(coupons);
+
             redisTemplate.opsForList().leftPush("coupons", coupons.toString());
             return "events/success";
         }
@@ -69,9 +86,8 @@ public class RedisController {
     public String getCoupons(@ModelAttribute Event event){
         String password = event.getPassword();
         String username = event.getUsername();
-
         List<String> list = (List<String>) redisTemplate.opsForList().range("coupons", 0, -1);
-        assert list != null;
+
         for(String coupon: list){
             if(coupon.contains(username)) return "good!";
         }

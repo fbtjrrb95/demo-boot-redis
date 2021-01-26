@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Profile;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -17,16 +15,16 @@ public class Coupons {
     @GeneratedValue
     private Long Id;
 
-    private String token;
-
+    private String couponnumber;
     private String username;
 
-    private String coupon;
+    @OneToOne(mappedBy = "coupons", cascade = CascadeType.ALL)
+    private Users users;
 
     @Override
     public String toString() {
         return "Coupons{" +
-                "token='" + token + '\'' +
+                "token='" + couponnumber + '\'' +
                 ", username='" + username + '\'' +
                 '}';
     }

@@ -36,11 +36,20 @@ public class RedisControllerTest {
     MockMvc mockMvc;
 
     @Test
-    public void getTokenTest() throws Exception {
-        mockMvc.perform(get("/redis/token"))
+    public void getTokenFailTest() throws Exception {
+        mockMvc.perform(post("/redis/token"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("events/post"))
+                .andExpect(view().name("events/fail"))
                 ;
+    }
+
+    @Test
+    public void getTokenSuccessTest() throws Exception {
+        redisTemplate.opsForList().leftPush("token", "1");
+        mockMvc.perform(post("/redis/token"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("events/success"))
+        ;
     }
 
     @Test
@@ -57,7 +66,7 @@ public class RedisControllerTest {
         redisTemplate.opsForList().leftPush("token", "1234");
         Coupons coupons = new Coupons();
         coupons.setUsername("seokkyu");
-        coupons.setToken((String)redisTemplate.opsForList().rightPop("token"));
+        coupons.setCouponnumber((String)redisTemplate.opsForList().rightPop("token"));
         redisTemplate.opsForList().leftPush("coupons",coupons.toString());
 
         mockMvc.perform(get("/redis/coupons")
@@ -74,7 +83,7 @@ public class RedisControllerTest {
         redisTemplate.opsForList().leftPush("token", "1234");
         Coupons coupons = new Coupons();
         coupons.setUsername("screw");
-        coupons.setToken((String)redisTemplate.opsForList().rightPop("token"));
+        coupons.setCouponnumber((String)redisTemplate.opsForList().rightPop("token"));
         redisTemplate.opsForList().leftPush("coupons",coupons.toString());
 
         mockMvc.perform(get("/redis/coupons")
