@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
@@ -32,6 +33,11 @@ public class RedisController {
     @Autowired
     UsersRepository usersRepository;
 
+    /*
+    *
+    * token initializing
+    *
+    */
     @GetMapping("/token/init")
     public String setToken(Model model) throws Exception {
         // initialize tokens at redis
@@ -42,7 +48,6 @@ public class RedisController {
             redisTemplate.opsForList().leftPush("token", uuid.toString());
         }
         model.addAttribute("tokens", num);
-
         return "events/form";
     }
 
@@ -62,6 +67,7 @@ public class RedisController {
         if(totalSize > 0l) {
 
             String token = (String) redisTemplate.opsForList().rightPop("token");
+
             Coupons coupons = new Coupons();
             coupons.setCouponnumber(token);
             coupons.setUsername(username);
@@ -71,8 +77,8 @@ public class RedisController {
             users.setPassword(password);
             users.setCoupons(coupons);
             coupons.setUsers(users);
-            // TODO: persist to database
 
+            // TODO: persist to database
             couponRepository.save(coupons);
 
             redisTemplate.opsForList().leftPush("coupons", coupons.toString());
@@ -84,13 +90,28 @@ public class RedisController {
     @GetMapping("/redis/coupons")
     @ResponseBody
     public String getCoupons(@ModelAttribute Event event){
+        // TODO: url querystring에 password 넘어오는 것 방지해보기
         String password = event.getPassword();
         String username = event.getUsername();
-        List<String> list = (List<String>) redisTemplate.opsForList().range("coupons", 0, -1);
 
-        for(String coupon: list){
-            if(coupon.contains(username)) return "good!";
+        // database에서 확인하기
+        Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
+
+        // TODO: optional api 잘 사용해보기
+        if(user.isPresent()) {
+            Optional<Coupons> coupon = couponRepository.findById(user.get().getCoupons().getId());
+            if(coupon.isPresent()) {
+                return "yes";
+            }
         }
+
+        // redis에서 확인하기
+//
+//        List<String> list = (List<String>) redisTemplate.opsForList().range("coupons", 0, -1);
+//
+//        for(String coupon: list){
+//            if(coupon.contains(username) && coupon.contains(password)) return "good!";
+//        }
         return "no!!";
     }
 
