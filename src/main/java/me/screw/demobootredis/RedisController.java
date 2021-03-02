@@ -39,6 +39,7 @@ public class RedisController {
     *
     */
     @GetMapping("/token/init")
+    @ResponseBody
     public String setToken(Model model) throws Exception {
         // initialize tokens at redis
         UUID uuid = null;
@@ -47,7 +48,11 @@ public class RedisController {
             uuid = randomUUID();
             redisTemplate.opsForList().leftPush("token", uuid.toString());
         }
-        model.addAttribute("tokens", num);
+        return "token initialize success!";
+    }
+
+    @GetMapping("/form")
+    public String getForm() throws Exception {
         return "events/form";
     }
 
@@ -112,7 +117,7 @@ public class RedisController {
 //        for(String coupon: list){
 //            if(coupon.contains(username) && coupon.contains(password)) return "good!";
 //        }
-        return "no!!";
+        return "no";
     }
 
 }

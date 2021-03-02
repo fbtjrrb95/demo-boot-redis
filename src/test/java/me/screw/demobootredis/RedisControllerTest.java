@@ -1,24 +1,13 @@
 package me.screw.demobootredis;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.stereotype.Component;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,6 +23,9 @@ public class RedisControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    CouponRepository couponRepository;
 
     @Test
     public void getTokenFailTest() throws Exception {
@@ -56,24 +48,37 @@ public class RedisControllerTest {
     public void setTokenTest() throws Exception {
         mockMvc.perform(get("/token/init"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("events/form"))
+                .andExpect(content().string("token initialize success!"))
         ;
+    }
+
+    @Test
+    public void getFormTest() throws Exception {
+        mockMvc.perform(get("/form"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("events/form"))
+                ;
     }
 
     @Test
     public void getCouponsTest() throws Exception {
 
-        redisTemplate.opsForList().leftPush("token", "1234");
         Coupons coupons = new Coupons();
+        coupons.setCouponnumber("1234");
         coupons.setUsername("seokkyu");
-        coupons.setCouponnumber((String)redisTemplate.opsForList().rightPop("token"));
-        redisTemplate.opsForList().leftPush("coupons",coupons.toString());
+
+        Users users = new Users();
+        users.setUsername("seokkyu");
+        users.setPassword("1234");
+        users.setCoupons(coupons);
+        coupons.setUsers(users);
+        couponRepository.save(coupons);
 
         mockMvc.perform(get("/redis/coupons")
                     .param("username","seokkyu")
                     .param("password","1234"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("good!"))
+                .andExpect(content().string("yes"))
                 ;
     }
 
@@ -90,7 +95,7 @@ public class RedisControllerTest {
                 .param("username","seokkyu")
                 .param("password","1234"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("no!!"))
+                .andExpect(content().string("no"))
         ;
     }
 }
