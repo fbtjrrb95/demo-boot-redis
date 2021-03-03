@@ -92,10 +92,14 @@ public class RedisController {
         return "events/fail";
     }
 
-    @GetMapping("/redis/coupons")
+    @PostMapping("/redis/coupons")
     @ResponseBody
     public String getCoupons(@ModelAttribute Event event){
-        // TODO: url querystring에 password 넘어오는 것 방지해보기
+        /**
+         * form data에서 get으로 쏘면 parmeter들이 query string에 노출되고
+         * post로 쏘면 parameter들이 query string에 노출되지 않는다.
+         * why?
+         * */
         String password = event.getPassword();
         String username = event.getUsername();
 

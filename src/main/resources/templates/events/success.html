@@ -5,7 +5,7 @@
     <title>Success</title>
 </head>
 <body>
-<form action="#" th:action="@{/redis/coupons}" th:object="${event}" method="get" >
+<form action="#" th:action="@{/redis/coupons}" th:object="${event}" method="post" >
     username : <input type="text" th:field="*{username}">
     password : <input type="text" th:field="*{password}">
     <input type="submit" value="get"/>
