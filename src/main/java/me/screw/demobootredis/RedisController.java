@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,7 +60,7 @@ public class RedisController {
     /**
      *
      * @param event username과 password과 form data로 넘어온다.
-     * @return 만약 redis token list에서 발급받을 수 있는 token이 존재한다면 redist coupons list에 저장하고 success view
+     * @return 만약 redis token list에서 발급받을 수 있는 token이 존재한다면 redis coupons list에 저장하고 success view
      * @return 그렇지 않다면 fail view
      * @throws Exception
      */
@@ -95,33 +96,20 @@ public class RedisController {
     @PostMapping("/redis/coupons")
     @ResponseBody
     public String getCoupons(@ModelAttribute Event event){
-        /**
-         * form data에서 get으로 쏘면 parmeter들이 query string에 노출되고
-         * post로 쏘면 parameter들이 query string에 노출되지 않는다.
-         * why?
-         * */
         String password = event.getPassword();
         String username = event.getUsername();
 
         // database에서 확인하기
-        Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
-
-        // TODO: optional api 잘 사용해보기
-        if(user.isPresent()) {
-            Optional<Coupons> coupon = couponRepository.findById(user.get().getCoupons().getId());
-            if(coupon.isPresent()) {
-                return "yes";
-            }
+        try {
+            // TODO: 이 Jpa transaction을 좀 더 팬시하게 쓸 수 없을까?
+            Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
+            Users _user = user.orElseThrow(() -> new NoSuchElementException("no"));
+            Optional<Coupons> coupon = couponRepository.findById(_user.getCoupons().getId());
+            Coupons _coupon = coupon.orElseThrow(() -> new NoSuchElementException("no"));
+        }catch(NoSuchElementException e){
+            return e.getMessage();
         }
-
-        // redis에서 확인하기
-//
-//        List<String> list = (List<String>) redisTemplate.opsForList().range("coupons", 0, -1);
-//
-//        for(String coupon: list){
-//            if(coupon.contains(username) && coupon.contains(password)) return "good!";
-//        }
-        return "no";
+        return "yes";
     }
 
 }

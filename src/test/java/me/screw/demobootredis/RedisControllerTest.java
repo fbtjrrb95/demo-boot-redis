@@ -74,7 +74,7 @@ public class RedisControllerTest {
         coupons.setUsers(users);
         couponRepository.save(coupons);
 
-        mockMvc.perform(get("/redis/coupons")
+        mockMvc.perform(post("/redis/coupons")
                     .param("username","seokkyu")
                     .param("password","1234"))
                 .andExpect(status().isOk())
@@ -91,7 +91,7 @@ public class RedisControllerTest {
         coupons.setCouponnumber((String)redisTemplate.opsForList().rightPop("token"));
         redisTemplate.opsForList().leftPush("coupons",coupons.toString());
 
-        mockMvc.perform(get("/redis/coupons")
+        mockMvc.perform(post("/redis/coupons")
                 .param("username","seokkyu")
                 .param("password","1234"))
                 .andExpect(status().isOk())
