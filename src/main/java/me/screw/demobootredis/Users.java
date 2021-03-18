@@ -14,8 +14,8 @@ public class Users {
     @GeneratedValue
     private Long Id;
 
-    @OneToOne
-    Coupons coupons;
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    private Coupons coupons;
 
     private String username;
     private String password;

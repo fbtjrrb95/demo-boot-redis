@@ -18,7 +18,7 @@ public class Coupons {
     private String couponnumber;
     private String username;
 
-    @OneToOne(mappedBy = "coupons", cascade = CascadeType.ALL)
+    @OneToOne
     private Users users;
 
     @Override

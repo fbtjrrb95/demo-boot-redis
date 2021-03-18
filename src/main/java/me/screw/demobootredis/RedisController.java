@@ -85,8 +85,7 @@ public class RedisController {
             coupons.setUsers(users);
 
             // TODO: persist to database
-            couponRepository.save(coupons);
-
+            usersRepository.save(users);
             redisTemplate.opsForList().leftPush("coupons", coupons.toString());
             return "events/success";
         }
@@ -104,7 +103,8 @@ public class RedisController {
             // TODO: 이 Jpa transaction을 좀 더 팬시하게 쓸 수 없을까?
             Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
             Users _user = user.orElseThrow(() -> new NoSuchElementException("no"));
-            Optional<Coupons> coupon = couponRepository.findById(_user.getCoupons().getId());
+            Optional<Coupons> coupon = Optional.ofNullable(_user.getCoupons());
+//            Optional<Coupons> coupon = couponRepository.findById(_user.getCoupons().getId());
             Coupons _coupon = coupon.orElseThrow(() -> new NoSuchElementException("no"));
         }catch(NoSuchElementException e){
             return e.getMessage();

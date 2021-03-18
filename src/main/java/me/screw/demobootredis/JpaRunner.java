@@ -23,9 +23,9 @@ public class JpaRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Coupons coupons = new Coupons();
-        coupons.setCouponnumber("couponnumber");
-        coupons.setUsername("seokkyu");
-        couponRepository.save(coupons);
+//        Coupons coupons = new Coupons();
+//        coupons.setCouponnumber("couponnumber");
+//        coupons.setUsername("seokkyu");
+//        couponRepository.save(coupons);
     }
 }

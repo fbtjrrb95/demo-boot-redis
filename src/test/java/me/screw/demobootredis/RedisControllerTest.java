@@ -24,8 +24,11 @@ public class RedisControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+//    @Autowired
+//    CouponRepository couponRepository;
+
     @Autowired
-    CouponRepository couponRepository;
+    UsersRepository usersRepository;
 
     @Test
     public void getTokenFailTest() throws Exception {
@@ -72,7 +75,12 @@ public class RedisControllerTest {
         users.setPassword("1234");
         users.setCoupons(coupons);
         coupons.setUsers(users);
-        couponRepository.save(coupons);
+
+        usersRepository.save(users);
+        // TODO: 이거 BLOG
+        // coupons가 users references 하는 데 두개의 관계를 맺어주더라도 usersRepository에 save해야한다.
+        // couponsRepository에 save하니깐 에러난다.
+//        couponRepository.save(coupons);
 
         mockMvc.perform(post("/redis/coupons")
                     .param("username","seokkyu")
