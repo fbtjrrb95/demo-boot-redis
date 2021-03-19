@@ -24,8 +24,8 @@ public class RedisControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-//    @Autowired
-//    CouponRepository couponRepository;
+    @Autowired
+    CouponRepository couponRepository;
 
     @Autowired
     UsersRepository usersRepository;

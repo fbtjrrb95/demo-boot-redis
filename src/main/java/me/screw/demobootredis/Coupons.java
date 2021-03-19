@@ -18,7 +18,8 @@ public class Coupons {
     private String couponnumber;
     private String username;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="users_id")
     private Users users;
 
     @Override
