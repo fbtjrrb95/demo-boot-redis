@@ -13,8 +13,10 @@ public interface CouponRepository extends JpaRepository<Coupons, Long> {
     // Optional로 감싸지 않는 것이 더 좋다고 하던데,,
     Optional<Coupons> findById(Long id);
 
-    @Query(value = "select c from Coupons c where c.id = (select u.id from Users u where u.username = :username and u.password = :password)")
-    Coupons findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    // 내가 만든 jpql
+    @Query(value = "select c from Coupons c where c.users.id = (select u.id from Users u where u.username = :username and u.password = :password)")
+    Coupons findByUsernameAndPassword(String username, String password);
 
+    // hibernate가 만들어주는 쿼리
     Coupons findByUsersUsernameAndUsersPassword(String username, String password);
 }

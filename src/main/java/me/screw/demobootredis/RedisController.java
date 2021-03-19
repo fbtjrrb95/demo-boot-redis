@@ -101,11 +101,16 @@ public class RedisController {
         // database에서 확인하기
         try {
             // TODO: 이 Jpa transaction을 좀 더 팬시하게 쓸 수 없을까?
+            // #1
 //            Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
 //            Users _user = user.orElseThrow(() -> new NoSuchElementException("no"));
 //            Optional<Coupons> coupon = Optional.ofNullable(_user.getCoupons());
-//            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsernameAndPassword(username, password));
-            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
+
+            // #2
+//            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
+
+            //#3
+            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsernameAndPassword(username, password));
 //            Optional<Coupons> coupon = couponRepository.findById(_user.getCoupons().getId());
             Coupons _coupon = coupon.orElseThrow(() -> new NoSuchElementException("no"));
         }catch(NoSuchElementException e){
