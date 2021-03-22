@@ -1,5 +1,8 @@
 package me.screw.demobootredis;
 
+import me.screw.demobootredis.domain.Coupons;
+import me.screw.demobootredis.domain.Users;
+import me.screw.demobootredis.repository.UsersRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,23 +12,19 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RedisControllerTest {
+public class EventControllerTest {
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
     MockMvc mockMvc;
-
-    @Autowired
-    CouponRepository couponRepository;
 
     @Autowired
     UsersRepository usersRepository;

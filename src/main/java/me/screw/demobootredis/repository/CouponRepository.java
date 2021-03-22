@@ -1,6 +1,6 @@
-package me.screw.demobootredis;
+package me.screw.demobootredis.repository;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import me.screw.demobootredis.domain.Coupons;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

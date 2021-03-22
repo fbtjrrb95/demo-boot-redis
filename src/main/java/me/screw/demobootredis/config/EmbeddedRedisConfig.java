@@ -1,4 +1,4 @@
-package me.screw.demobootredis;
+package me.screw.demobootredis.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

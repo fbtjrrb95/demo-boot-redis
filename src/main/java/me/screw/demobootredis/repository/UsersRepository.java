@@ -1,15 +1,12 @@
-package me.screw.demobootredis;
+package me.screw.demobootredis.repository;
 
-import org.springframework.data.domain.Example;
+import me.screw.demobootredis.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByUsernameAndPassword(String username, String password);
-
 }

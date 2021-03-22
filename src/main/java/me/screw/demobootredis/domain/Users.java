@@ -1,4 +1,4 @@
-package me.screw.demobootredis;
+package me.screw.demobootredis.domain;
 
 import lombok.Getter;
 import lombok.Setter;
