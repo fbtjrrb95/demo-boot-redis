@@ -31,7 +31,7 @@ public class EventControllerTest {
 
     @Test
     public void getTokenFailTest() throws Exception {
-        mockMvc.perform(post("/redis/token"))
+        mockMvc.perform(post("/token"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("events/fail"))
                 ;
@@ -40,7 +40,7 @@ public class EventControllerTest {
     @Test
     public void getTokenSuccessTest() throws Exception {
         redisTemplate.opsForList().leftPush("token", "1");
-        mockMvc.perform(post("/redis/token"))
+        mockMvc.perform(post("/token"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("events/success"))
         ;
@@ -48,7 +48,7 @@ public class EventControllerTest {
 
     @Test
     public void setTokenTest() throws Exception {
-        mockMvc.perform(get("/token/init"))
+        mockMvc.perform(get("/init"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("token initialize success!"))
         ;
@@ -81,7 +81,7 @@ public class EventControllerTest {
         // couponsRepository에 save하니깐 에러난다.
 //        couponRepository.save(coupons);
 
-        mockMvc.perform(post("/redis/coupons")
+        mockMvc.perform(post("/coupons")
                     .param("username","seokkyu")
                     .param("password","1234"))
                 .andExpect(status().isOk())
@@ -98,7 +98,7 @@ public class EventControllerTest {
         coupons.setCouponnumber((String)redisTemplate.opsForList().rightPop("token"));
         redisTemplate.opsForList().leftPush("coupons",coupons.toString());
 
-        mockMvc.perform(post("/redis/coupons")
+        mockMvc.perform(post("/coupons")
                 .param("username","seokkyu")
                 .param("password","1234"))
                 .andExpect(status().isOk())
