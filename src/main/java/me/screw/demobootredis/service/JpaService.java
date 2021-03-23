@@ -33,18 +33,19 @@ public class JpaService {
         // 아직도 정확한 mapping 개념을 모르나보다,,
         usersRepository.save(users);
     }
-
     public Coupons getCoupons(String username, String password) throws Exception {
         // #1
-//            Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
-//            Users _user = user.orElseThrow(() -> new NoSuchElementException("no"));
-//            Optional<Coupons> coupon = Optional.ofNullable(_user.getCoupons());
-//            Optional<Coupons> coupon = couponRepository.findById(_user.getCoupons().getId());
+//        Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
+//        Users _user = user.orElseThrow(() -> new NoSuchElementException("no"));
+//        Optional<Coupons> coupon = Optional.ofNullable(_user.getCoupons());
+
         // #2
-//            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
+            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
 
         //#3
-        Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsernameAndPassword(username, password));
+//        Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsernameAndPassword(username, password));
+
+
         Coupons _coupon = coupon.orElseThrow(() -> new NoSuchElementException("no"));
         return _coupon;
     }

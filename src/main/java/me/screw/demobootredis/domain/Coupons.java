@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Coupons {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     private String couponnumber;
