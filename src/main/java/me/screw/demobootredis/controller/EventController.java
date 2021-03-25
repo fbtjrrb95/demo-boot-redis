@@ -1,6 +1,7 @@
 package me.screw.demobootredis.controller;
 
 import me.screw.demobootredis.Event;
+import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.service.JpaService;
 import me.screw.demobootredis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,20 +65,24 @@ public class EventController {
         return "events/success";
     }
 
+    @GetMapping("/token")
+    public String getToken1(@ModelAttribute Event event) throws Exception {
+        return "events/success";
+    }
+
     @PostMapping("/coupons")
-    @ResponseBody
     public String getCoupons(@ModelAttribute Event event){
         String password = event.getPassword();
         String username = event.getUsername();
-
         try {
-            jpaService.getCoupons(username, password);
-        }catch(NoSuchElementException e){
-            return e.getMessage();
-        }catch(Exception e){
-            return e.getMessage();
+            Coupons coupons = jpaService.getCoupons(username, password);
+            // TODO: coupons model 넘기기
+            return "events/coupons";
+        } catch(NoSuchElementException e){
+            return "events/fail";
+        } catch(Exception e){
+            return "events/fail";
         }
-        return "yes";
     }
 
 }
