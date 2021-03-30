@@ -71,12 +71,12 @@ public class EventController {
     }
 
     @PostMapping("/coupons")
-    public String getCoupons(@ModelAttribute Event event){
+    public String getCoupons(@ModelAttribute Event event, Model model){
         String password = event.getPassword();
         String username = event.getUsername();
         try {
             Coupons coupons = jpaService.getCoupons(username, password);
-            // TODO: coupons model 넘기기
+            model.addAttribute("coupons", coupons);
             return "events/coupons";
         } catch(NoSuchElementException e){
             return "events/fail";

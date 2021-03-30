@@ -5,9 +5,12 @@
     <title>Success</title>
 </head>
 <body>
-<a th:href="@{/redirect/token}">yes</a>
-<!--<form action="#" th:object="${coupons}" >-->
-<!--    couponnumber : <input type="text" th:field="*{couponnumber}">-->
-<!--</form>-->
+<div th:object="${coupons}" >
+    username: <p th:text="*{username}"/>
+    couponnumber : <p th:text="*{couponnumber}"/>
+</div>
+
+<a th:href="@{/redirect/token}">back</a>
+
 </body>
 </html>
