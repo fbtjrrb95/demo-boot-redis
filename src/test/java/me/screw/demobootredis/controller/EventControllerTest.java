@@ -1,4 +1,4 @@
-package me.screw.demobootredis;
+package me.screw.demobootredis.controller;
 
 import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.domain.Users;
