@@ -6,6 +6,7 @@ import me.screw.demobootredis.domain.Users;
 import me.screw.demobootredis.service.JpaService;
 import me.screw.demobootredis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,6 @@ import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 
 @Controller
-@Transactional
 public class EventController {
 
     @ModelAttribute("event")
@@ -53,11 +53,12 @@ public class EventController {
         String username = event.getUsername();
         String password = event.getPassword();
         try {
-            Users users = jpaService.saveUsers(username, password);
+            jpaService.saveUsers(username, password);
+        }catch(DataIntegrityViolationException e){
+            return "events/form";
         }catch (Exception e){
             return "events/form";
         }
-        // session 넣어야 대나?
         httpSession.setAttribute("username", username);
         return "redirect:/token";
     }
@@ -70,7 +71,7 @@ public class EventController {
      * @throws Exception
      */
     @GetMapping("/token")
-    public String getToken(Event event, Model model, HttpSession httpSession) throws Exception {
+    public String getToken(HttpSession httpSession) throws Exception {
         String couponNumber = redisService.getToken();
         String username = (String)httpSession.getAttribute("username");
         if(couponNumber == null) return "events/fail";

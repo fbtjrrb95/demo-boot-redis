@@ -22,8 +22,8 @@ public class JpaService {
         Users users = new Users();
         users.setUsername(username);
         users.setPassword(password);
-
         usersRepository.save(users);
+
         return users;
     }
     public void saveCoupons(String couponNumber, String username){
