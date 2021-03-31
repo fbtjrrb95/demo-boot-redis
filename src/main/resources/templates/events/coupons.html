@@ -6,11 +6,10 @@
 </head>
 <body>
 <div th:object="${coupons}" >
-    username: <p th:text="*{username}"/>
     couponnumber : <p th:text="*{couponnumber}"/>
 </div>
 
-<a th:href="@{/redirect/token}">back</a>
+<a th:href="@{/redirect/success}">back</a>
 
 </body>
 </html>

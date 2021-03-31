@@ -53,7 +53,7 @@ public class EventController {
         String username = event.getUsername();
         String password = event.getPassword();
         try {
-            Users users = jpaService.saveUser(username, password);
+            Users users = jpaService.saveUsers(username, password);
         }catch (Exception e){
             return "events/form";
         }
@@ -85,11 +85,12 @@ public class EventController {
     }
 
     @PostMapping("/coupons")
-    public String getCoupons(@ModelAttribute Event event){
+    public String getCoupons(@ModelAttribute Event event, Model model){
         String password = event.getPassword();
         String username = event.getUsername();
         try {
             Coupons coupons = jpaService.getCoupons(username, password);
+            model.addAttribute(coupons);
             return "events/coupons";
         } catch(NoSuchElementException e){
             return "events/fail";
