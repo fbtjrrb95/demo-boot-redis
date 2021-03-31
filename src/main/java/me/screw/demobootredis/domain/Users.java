@@ -17,6 +17,8 @@ public class Users {
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private Coupons coupons;
 
+    @Column(unique = true)
     private String username;
+
     private String password;
 }

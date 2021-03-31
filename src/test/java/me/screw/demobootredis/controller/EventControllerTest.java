@@ -67,7 +67,6 @@ public class EventControllerTest {
 
         Coupons coupons = new Coupons();
         coupons.setCouponnumber("1234");
-        coupons.setUsername("seokkyu");
 
         Users users = new Users();
         users.setUsername("seokkyu");
@@ -94,7 +93,7 @@ public class EventControllerTest {
 
         redisTemplate.opsForList().leftPush("token", "1234");
         Coupons coupons = new Coupons();
-        coupons.setUsername("screw");
+
         coupons.setCouponnumber((String)redisTemplate.opsForList().rightPop("token"));
         redisTemplate.opsForList().leftPush("coupons",coupons.toString());
 

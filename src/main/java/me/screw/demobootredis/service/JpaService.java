@@ -18,10 +18,17 @@ public class JpaService {
     @Autowired
     CouponRepository couponRepository;
 
+    public Users saveUser(String username, String password) throws Exception{
+        Users users = new Users();
+        users.setUsername(username);
+        users.setPassword(password);
+
+        usersRepository.save(users);
+        return users;
+    }
     public void saveUsers(String username, String password, String couponNumber) {
         Coupons coupons = new Coupons();
         coupons.setCouponnumber(couponNumber);
-        coupons.setUsername(username);
 
         Users users = new Users();
         users.setUsername(username);
@@ -32,6 +39,14 @@ public class JpaService {
         // TODO: user를 save하는 게 맞는 건가?
         // 아직도 정확한 mapping 개념을 모르나보다,,
         usersRepository.save(users);
+    }
+    public void saveCoupons(String couponNumber, String username){
+        Coupons coupons = new Coupons();
+        coupons.setCouponnumber(couponNumber);
+        // persist
+        Users users = usersRepository.findByUsername(username);
+        coupons.setUsers(users);
+        couponRepository.save(coupons);
     }
     public Coupons getCoupons(String username, String password) throws Exception {
         // #1

@@ -5,7 +5,7 @@
     <title>submit</title>
 </head>
 <body>
-<form action="#" th:action="@{/token}" th:object="${event}" method="post">
+<form action="#" th:action="@{/users}" th:object="${event}" method="post">
     username : <input type="text" th:field="*{username}">
     password : <input type="text" th:field="*{password}">
     <input type="submit" value="Submit"/>

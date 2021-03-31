@@ -7,9 +7,9 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class RedirectController {
 
-    @GetMapping("/redirect/token")
+    @GetMapping("/redirect/success")
     public RedirectView getRedirectToken(){
-        return new RedirectView("/token");
+        return new RedirectView("/success");
     }
 
     @GetMapping("/redirect/form")

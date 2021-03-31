@@ -15,7 +15,6 @@ public class Coupons {
     private Long Id;
 
     private String couponnumber;
-    private String username;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="users_id")
@@ -24,8 +23,9 @@ public class Coupons {
     @Override
     public String toString() {
         return "Coupons{" +
-                "token='" + couponnumber + '\'' +
-                ", username='" + username + '\'' +
+                "Id=" + Id +
+                ", couponnumber='" + couponnumber + '\'' +
+                ", users=" + users +
                 '}';
     }
 }
