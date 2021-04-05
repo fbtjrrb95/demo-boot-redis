@@ -79,7 +79,7 @@ public class EventControllerTest {
                     .param("username","seokkyu")
                     .param("password","1234"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("yes"))
+                .andExpect(view().name("events/coupons"))
                 ;
     }
 

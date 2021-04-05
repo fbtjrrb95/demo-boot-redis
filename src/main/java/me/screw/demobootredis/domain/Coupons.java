@@ -25,7 +25,6 @@ public class Coupons {
         return "Coupons{" +
                 "Id=" + Id +
                 ", couponnumber='" + couponnumber + '\'' +
-                ", users=" + users +
                 '}';
     }
 }
