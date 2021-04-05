@@ -2,7 +2,9 @@ package me.screw.demobootredis.controller;
 
 import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.domain.Users;
+import me.screw.demobootredis.repository.CouponRepository;
 import me.screw.demobootredis.repository.UsersRepository;
+import me.screw.demobootredis.service.JpaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import javax.servlet.http.HttpSession;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,11 +31,14 @@ public class EventControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsersRepository usersRepository;
+    JpaService jpaService;
+
+    @Autowired
+    HttpSession httpSession;
 
     @Test
     public void getTokenFailTest() throws Exception {
-        mockMvc.perform(post("/token"))
+        mockMvc.perform(get("/token"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("events/fail"))
                 ;
@@ -40,7 +47,7 @@ public class EventControllerTest {
     @Test
     public void getTokenSuccessTest() throws Exception {
         redisTemplate.opsForList().leftPush("token", "1");
-        mockMvc.perform(post("/token"))
+        mockMvc.perform(get("/token"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("events/success"))
         ;
@@ -65,26 +72,24 @@ public class EventControllerTest {
     @Test
     public void getCouponsTest() throws Exception {
 
-        Coupons coupons = new Coupons();
-        coupons.setCouponnumber("1234");
 
-        Users users = new Users();
-        users.setUsername("seokkyu");
-        users.setPassword("1234");
-        users.setCoupons(coupons);
-        coupons.setUsers(users);
-
-        usersRepository.save(users);
-        // TODO: 이거 BLOG
-        // coupons가 users references 하는 데 두개의 관계를 맺어주더라도 usersRepository에 save해야한다.
-        // couponsRepository에 save하니깐 에러난다.
-//        couponRepository.save(coupons);
+        jpaService.saveCoupons("1234", "seokkyu");
 
         mockMvc.perform(post("/coupons")
                     .param("username","seokkyu")
                     .param("password","1234"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("yes"))
+                ;
+    }
+
+    @Test
+    public void saveUsersTest() throws Exception {
+        mockMvc.perform(post("/users")
+                        .param("username","seokkyu")
+                        .param("password", "1234"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/token"))
                 ;
     }
 
@@ -101,7 +106,7 @@ public class EventControllerTest {
                 .param("username","seokkyu")
                 .param("password","1234"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("no"))
+                .andExpect(view().name("events/fail"))
         ;
     }
 }

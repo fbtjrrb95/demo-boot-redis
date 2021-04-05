@@ -2,18 +2,15 @@ package me.screw.demobootredis.controller;
 
 import me.screw.demobootredis.Event;
 import me.screw.demobootredis.domain.Coupons;
-import me.screw.demobootredis.domain.Users;
 import me.screw.demobootredis.service.JpaService;
 import me.screw.demobootredis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 
 @Controller
