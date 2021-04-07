@@ -12,6 +12,11 @@ public class RedirectController {
         return new RedirectView("/success");
     }
 
+    @GetMapping("/redirect/success/apply")
+    public RedirectView getRedirectApply(){
+        return new RedirectView("/success/apply");
+    }
+
     @GetMapping("/redirect/form")
     public RedirectView getRedirectForm(){
         return new RedirectView("/form");

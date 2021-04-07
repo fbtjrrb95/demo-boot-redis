@@ -9,7 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -59,7 +58,12 @@ public class EventController {
             return "events/form";
         }
         httpSession.setAttribute("username", username);
-        return "redirect:/token";
+        return "redirect:/success/apply";
+    }
+
+    @GetMapping("/success/apply")
+    public String submit() {
+        return "events/apply";
     }
 
     /**
@@ -75,6 +79,7 @@ public class EventController {
         String username = (String)httpSession.getAttribute("username");
         if(couponNumber == null) return "events/fail";
         jpaService.saveCoupons(couponNumber, username);
+
 
         return "events/success";
     }
