@@ -16,7 +16,7 @@ public class Coupons {
 
     private String couponnumber;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="users_id")
     private Users users;
 

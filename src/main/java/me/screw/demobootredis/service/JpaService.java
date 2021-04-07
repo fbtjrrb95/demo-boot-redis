@@ -7,6 +7,7 @@ import me.screw.demobootredis.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class JpaService {
 
         return users;
     }
+
     public void saveCoupons(String couponNumber, String username){
         Coupons coupons = new Coupons();
         coupons.setCouponnumber(couponNumber);
@@ -34,20 +36,10 @@ public class JpaService {
         coupons.setUsers(users);
         couponRepository.save(coupons);
     }
-    public Coupons getCoupons(String username, String password) throws Exception {
-        // #1
-//        Optional<Users> user = usersRepository.findByUsernameAndPassword(username, password);
-//        Users _user = user.orElseThrow(() -> new NoSuchElementException("no"));
-//        Optional<Coupons> coupon = Optional.ofNullable(_user.getCoupons());
 
-        // #2
-            Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
-
-        //#3
-//        Optional<Coupons> coupon = Optional.ofNullable(couponRepository.findByUsernameAndPassword(username, password));
-
-
-        Coupons _coupon = coupon.orElseThrow(() -> new NoSuchElementException("no"));
-        return _coupon;
+    public List<Coupons> getCoupons(String username, String password) throws Exception {
+        Optional<List<Coupons>> coupons = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
+        List<Coupons> _coupons = coupons.orElseThrow(() -> new NoSuchElementException("no"));
+        return _coupons;
     }
 }

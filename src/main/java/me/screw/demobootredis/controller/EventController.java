@@ -9,8 +9,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -46,7 +48,7 @@ public class EventController {
     }
 
     @PostMapping("/users")
-    public String saveUsers(@ModelAttribute Event event, Model model, HttpSession httpSession) throws Exception {
+    public String saveUsers(@ModelAttribute Event event, HttpSession httpSession) throws Exception {
         String username = event.getUsername();
         String password = event.getPassword();
         try {
@@ -87,8 +89,8 @@ public class EventController {
         String password = event.getPassword();
         String username = event.getUsername();
         try {
-            Coupons coupons = jpaService.getCoupons(username, password);
-            model.addAttribute(coupons);
+            List<Coupons> coupons = jpaService.getCoupons(username, password);
+            model.addAttribute("coupons", coupons.get(0));
             return "events/coupons";
         } catch(NoSuchElementException e){
             return "events/fail";

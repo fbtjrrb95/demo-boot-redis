@@ -71,8 +71,6 @@ public class EventControllerTest {
 
     @Test
     public void getCouponsTest() throws Exception {
-
-
         jpaService.saveCoupons("1234", "seokkyu");
 
         mockMvc.perform(post("/coupons")
