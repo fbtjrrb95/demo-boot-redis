@@ -5,10 +5,23 @@
     <title>Success</title>
 </head>
 <body>
-<div th:object="${coupons}" >
-    couponnumber : <p th:text="*{couponnumber}"/>
-</div>
-
+<table>
+    <thead>
+    <tr>
+        <th> Id </th>
+        <th> Number </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${coupons.empty}">
+        <td colspan="2"> No Coupons Available </td>
+    </tr>
+    <tr th:each="coupon : ${coupons}">
+        <td><span th:text="${coupon.id}"> Id </span></td>
+        <td><span th:text="${coupon.couponnumber}"> number </span></td>
+    </tr>
+    </tbody>
+</table>
 <a th:href="@{/redirect/success}">back</a>
 
 </body>

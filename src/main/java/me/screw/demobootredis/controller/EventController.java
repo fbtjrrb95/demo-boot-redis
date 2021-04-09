@@ -95,7 +95,7 @@ public class EventController {
         String username = event.getUsername();
         try {
             List<Coupons> coupons = jpaService.getCoupons(username, password);
-            model.addAttribute("coupons", coupons.get(0));
+            model.addAttribute("coupons", coupons);
             return "events/coupons";
         } catch(NoSuchElementException e){
             return "events/fail";
