@@ -7,6 +7,7 @@ import me.screw.demobootredis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
+@Transactional
 public class EventController {
 
     @ModelAttribute("event")
@@ -96,6 +98,8 @@ public class EventController {
         try {
             List<Coupons> coupons = jpaService.getCoupons(username, password);
             model.addAttribute("coupons", coupons);
+
+            
             return "events/coupons";
         } catch(NoSuchElementException e){
             return "events/fail";

@@ -87,7 +87,7 @@ public class EventControllerTest {
                         .param("username","seokkyu")
                         .param("password", "1234"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/token"))
+                .andExpect(redirectedUrl("/success/apply"))
                 ;
     }
 
@@ -104,7 +104,7 @@ public class EventControllerTest {
                 .param("username","seokkyu")
                 .param("password","1234"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("events/fail"))
+                .andExpect(view().name("events/coupons"))
         ;
     }
 }
