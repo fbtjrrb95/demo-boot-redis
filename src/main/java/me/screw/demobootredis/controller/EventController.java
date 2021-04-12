@@ -7,6 +7,8 @@ import me.screw.demobootredis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
-@Transactional
 public class EventController {
 
     @ModelAttribute("event")
@@ -49,16 +50,16 @@ public class EventController {
     }
 
     @PostMapping("/users")
+    @Transactional
     public String saveUsers(@ModelAttribute Event event, HttpSession httpSession) throws Exception {
         String username = event.getUsername();
         String password = event.getPassword();
         try {
             jpaService.saveUsers(username, password);
-        }catch(DataIntegrityViolationException e){
-            return "events/form";
         }catch (Exception e){
             return "events/form";
         }
+        System.out.println("before end");
         httpSession.setAttribute("username", username);
         return "redirect:/success/apply";
     }

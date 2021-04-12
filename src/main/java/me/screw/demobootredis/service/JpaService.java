@@ -6,6 +6,8 @@ import me.screw.demobootredis.repository.CouponRepository;
 import me.screw.demobootredis.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,6 +15,7 @@ import java.util.Optional;
 
 @Service
 public class JpaService {
+
     @Autowired
     UsersRepository usersRepository;
 
@@ -23,8 +26,11 @@ public class JpaService {
         Users users = new Users();
         users.setUsername(username);
         users.setPassword(password);
-        usersRepository.save(users);
-
+        try {
+            usersRepository.save(users);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
         return users;
     }
 
