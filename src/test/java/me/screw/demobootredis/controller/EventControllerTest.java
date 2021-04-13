@@ -1,9 +1,6 @@
 package me.screw.demobootredis.controller;
 
 import me.screw.demobootredis.domain.Coupons;
-import me.screw.demobootredis.domain.Users;
-import me.screw.demobootredis.repository.CouponRepository;
-import me.screw.demobootredis.repository.UsersRepository;
 import me.screw.demobootredis.service.JpaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
