@@ -18,6 +18,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,13 +35,22 @@ class JpaServiceTest {
     private UsersRepository usersRepository;
 
     @Test
-    void saveUsers() {
-
+    void saveUsers() throws Exception {
+        Users users = jpaService.saveUsers("seokkyu","1234");
+        verify(usersRepository, times(1)).save(users);
     }
 
     @Test
     void saveCoupons() {
+        Users users = new Users();
+        users.setId(1l);
+        users.setUsername("seokkyu");
+        users.setPassword("1234");
 
+        given(usersRepository.findByUsername("seokkyu")).willReturn(users);
+
+        Coupons coupons = jpaService.saveCoupons("coupon_uuid", "seokkyu");
+        verify(couponRepository, times(1)).save(coupons);
     }
 
     @Test

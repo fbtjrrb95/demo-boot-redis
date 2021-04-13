@@ -26,21 +26,17 @@ public class JpaService {
         Users users = new Users();
         users.setUsername(username);
         users.setPassword(password);
-        try {
-            usersRepository.save(users);
-        }catch (Exception e){
-            throw new Exception(e);
-        }
+        usersRepository.save(users);
         return users;
     }
 
-    public void saveCoupons(String couponNumber, String username){
+    public Coupons saveCoupons(String couponNumber, String username){
         Coupons coupons = new Coupons();
         coupons.setCouponnumber(couponNumber);
-        // persist
         Users users = usersRepository.findByUsername(username);
         coupons.setUsers(users);
         couponRepository.save(coupons);
+        return coupons;
     }
 
     public List<Coupons> getCoupons(String username, String password) throws Exception {
