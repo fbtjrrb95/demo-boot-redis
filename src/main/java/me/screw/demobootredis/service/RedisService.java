@@ -14,7 +14,6 @@ public class RedisService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
     public void initializeToken(int totalCnt){
         UUID uuid = null;
         for(int i=0;i<totalCnt;i++) {
