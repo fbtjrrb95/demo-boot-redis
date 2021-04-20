@@ -2,6 +2,7 @@ package me.screw.demobootredis.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
 import java.util.List;
