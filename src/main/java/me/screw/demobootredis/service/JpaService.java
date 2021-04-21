@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class JpaService {
@@ -38,8 +36,7 @@ public class JpaService {
     }
 
     public List<Coupons> getCoupons(String username, String password) throws Exception {
-        Optional<List<Coupons>> coupons = Optional.ofNullable(couponRepository.findByUsersUsernameAndUsersPassword(username, password));
-        List<Coupons> _coupons = coupons.orElseThrow(() -> new NoSuchElementException("no"));
-        return _coupons;
+        List<Coupons> coupons = couponRepository.findByUsersUsernameAndUsersPassword(username, password);
+        return coupons;
     }
 }
