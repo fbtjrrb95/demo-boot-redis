@@ -58,7 +58,6 @@ public class EventController {
         }catch (Exception e){
             return "events/form";
         }
-        System.out.println("before end");
         httpSession.setAttribute("username", username);
         return "redirect:/success/apply";
     }
@@ -98,8 +97,6 @@ public class EventController {
         try {
             List<Coupons> coupons = jpaService.getCoupons(username, password);
             model.addAttribute("coupons", coupons);
-
-            
             return "events/coupons";
         } catch(NoSuchElementException e){
             return "events/fail";
