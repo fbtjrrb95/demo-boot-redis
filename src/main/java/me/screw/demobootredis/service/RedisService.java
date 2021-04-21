@@ -7,7 +7,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 
@@ -20,12 +19,16 @@ public class RedisService {
     @Autowired
     private UsersRedisRepository usersRedisRepository;
 
-    public void initializeToken(int totalCnt){
-        UUID uuid = null;
+    public RedisService(RedisTemplate redisTemplate, UsersRedisRepository usersRedisRepository) {
+        this.redisTemplate = redisTemplate;
+        this.usersRedisRepository = usersRedisRepository;
+    }
+
+    public long initializeToken(int totalCnt){
         for(int i=0;i<totalCnt;i++) {
-            uuid = randomUUID();
-            redisTemplate.opsForList().leftPush("token", uuid.toString());
+            redisTemplate.opsForList().leftPush("token", randomUUID().toString());
         }
+        return (long)redisTemplate.opsForList().size("token");
     }
 
     public String getToken() {
