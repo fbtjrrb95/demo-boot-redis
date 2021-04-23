@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -33,29 +34,24 @@ class RedisServiceTest {
     @Mock
     private ListOperations<String, String> mockTokenList;
 
-//    @Mock
-//    private UsersRedisRepository usersRedisRepository;
-
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         Mockito.when(redisTemplate.opsForList()).thenReturn(mockTokenList);
-
-//        Mockito.doNothing().when(mockTokenList).set("token", 1L, "coupon_uuid");
+        Mockito.when(redisTemplate.opsForList().size("token")).thenReturn(2l);
     }
 
     @Test
     public void initializeToken() {
-        Mockito.when(redisTemplate.opsForList().size("token")).thenReturn(10L);
-        assertEquals(10L, redisService.initializeToken(10));
+        assertEquals(2L, redisService.initializeToken(2));
     }
 
-//    @Test
-//    public void getToken() {
-//        redisTemplate.opsForList().rightPush("token","coupon_uuid");
-//        assertEquals(redisService.getToken(),"coupon_uuid");
-//    }
+    @Test
+    public void getToken() {
+        Mockito.when(redisTemplate.opsForList().size("token")).thenReturn(2l);
+        Mockito.when(redisTemplate.opsForList().rightPop("token")).thenReturn("coupon_uuid1");
+        assertEquals("coupon_uuid1", redisService.getToken());
+    }
 //
 //    @Test
 //    public void getNullToken() {
