@@ -48,15 +48,17 @@ class RedisServiceTest {
 
     @Test
     public void getToken() {
-        Mockito.when(redisTemplate.opsForList().size("token")).thenReturn(2l);
+        Mockito.when(redisTemplate.opsForList().size("token")).thenReturn(2L);
         Mockito.when(redisTemplate.opsForList().rightPop("token")).thenReturn("coupon_uuid1");
         assertEquals("coupon_uuid1", redisService.getToken());
     }
-//
-//    @Test
-//    public void getNullToken() {
-//        assertEquals(redisService.getToken(), null);
-//    }
+
+    @Test
+    public void getNullToken() {
+        Mockito.when(redisTemplate.opsForList().size("token")).thenReturn(0L);
+        Mockito.when(redisTemplate.opsForList().rightPop("token")).thenReturn(null);
+        assertEquals(redisService.getToken(), null);
+    }
 
 //    @Test
 //    public void getUsers(){

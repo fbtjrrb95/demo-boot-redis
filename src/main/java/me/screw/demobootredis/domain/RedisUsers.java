@@ -14,7 +14,6 @@ public class RedisUsers implements Serializable {
     @Id
     private String id;
 
-
     @Builder
     public RedisUsers(String username){
         this.id=username;
