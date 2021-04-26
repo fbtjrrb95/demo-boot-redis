@@ -52,7 +52,9 @@ public class EventController {
         String password = event.getPassword();
         try {
             boolean isUsersExist = redisService.isExist(username);
-            if(isUsersExist) throw new Exception();
+            if(isUsersExist) {
+                return "events/form";
+            }
             redisService.setUsers(username);
             jpaService.saveUsers(username, password);
         }catch (Exception e){
