@@ -1,5 +1,6 @@
 package me.screw.demobootredis.service;
 
+import me.screw.demobootredis.domain.RedisUsers;
 import me.screw.demobootredis.repository.UsersRedisRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +16,11 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,6 +35,9 @@ class RedisServiceTest {
 
     @Mock
     private ListOperations<String, String> mockTokenList;
+
+    @Mock
+    private UsersRedisRepository usersRedisRepository;
 
     @BeforeEach
     public void setup() {
@@ -60,19 +65,24 @@ class RedisServiceTest {
         assertEquals(redisService.getToken(), null);
     }
 
-//    @Test
-//    public void getUsers(){
-//
-//    }
-//
-//    @Test
-//    public void setUsers() {
-//
-//    }
-//
-//    @Test
-//    public void isExist() {
-//
-//    }
+    @Test
+    public void getUsers() throws Exception {
+        redisService.getUsers("seokkyu");
+        verify(usersRedisRepository, times(1)).findById("seokkyu");
+    }
+
+    @Test
+    public void setUsers() throws Exception {
+        RedisUsers users = redisService.setUsers("seokkyu");
+
+        verify(usersRedisRepository, times(1)).save(users);
+    }
+
+    @Test
+    public void isExist() throws Exception {
+        RedisUsers users = RedisUsers.builder().username("seokkyu").build();
+        when(usersRedisRepository.findById("seokkyu")).thenReturn(Optional.ofNullable(users));
+        assertEquals(redisService.isExist("seokkyu"), true);
+    }
 
 }

@@ -58,6 +58,7 @@ public class EventController {
             redisService.setUsers(username);
             jpaService.saveUsers(username, password);
         }catch (Exception e){
+
             return "events/form";
         }
         httpSession.setAttribute("username", username);

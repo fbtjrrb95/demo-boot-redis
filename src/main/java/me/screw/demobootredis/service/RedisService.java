@@ -44,9 +44,10 @@ public class RedisService {
         return usersOpt.orElseGet(()->null);
     }
 
-    public void setUsers(String username) throws Exception{
+    public RedisUsers setUsers(String username) throws Exception{
         RedisUsers users = RedisUsers.builder().username(username).build();
         usersRedisRepository.save(users);
+        return users;
     }
 
     public boolean isExist(String username) throws Exception {
