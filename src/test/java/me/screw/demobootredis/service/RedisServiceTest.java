@@ -85,4 +85,9 @@ class RedisServiceTest {
         assertEquals(redisService.isExist("seokkyu"), true);
     }
 
+    @Test
+    public void isNotExist() throws Exception {
+        assertEquals(redisService.isExist("seokkyu"), false);
+    }
+
 }

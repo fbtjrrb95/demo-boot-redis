@@ -7,6 +7,7 @@ import me.screw.demobootredis.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,12 +32,16 @@ public class JpaService {
         coupons.setCouponnumber(couponNumber);
         Users users = usersRepository.findByUsername(username);
         coupons.setUsers(users);
+        List<Coupons> list = new ArrayList<>();
+        list.add(coupons);
+        users.setCouponList(list);
         couponRepository.save(coupons);
         return coupons;
     }
 
     public List<Coupons> getCoupons(String username, String password) throws Exception {
         List<Coupons> coupons = couponRepository.findByUsersUsernameAndUsersPassword(username, password);
+//        System.out.println(coupons.get(0).getUsers().getUsername());
         return coupons;
     }
 }
