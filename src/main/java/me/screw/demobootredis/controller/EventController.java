@@ -83,8 +83,6 @@ public class EventController {
         String username = (String)httpSession.getAttribute("username");
         if(couponNumber == null) return "events/fail";
         jpaService.saveCoupons(couponNumber, username);
-
-
         return "events/success";
     }
 
