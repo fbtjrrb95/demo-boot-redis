@@ -1,5 +1,6 @@
 package me.screw.demobootredis.controller;
 
+import me.screw.demobootredis.Event;
 import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.service.JpaService;
 import org.junit.Test;
@@ -7,11 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import javax.servlet.http.HttpSession;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,16 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class EventControllerTest {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    public RedisTemplate redisTemplate;
 
     @Autowired
-    MockMvc mockMvc;
+    public MockMvc mockMvc;
 
-    @Autowired
-    JpaService jpaService;
-
-    @Autowired
-    HttpSession httpSession;
+    @MockBean
+    public JpaService jpaService;
 
     @Test
     public void getTokenFailTest() throws Exception {
@@ -43,10 +40,20 @@ public class EventControllerTest {
 
     @Test
     public void getTokenSuccessTest() throws Exception {
+        Event event = new Event();
+        event.setUsername("seokkyu");
+        event.setPassword("1234");
+        Coupons coupons = new Coupons();
+        coupons.setCouponnumber("coupon_uuid");
+
         redisTemplate.opsForList().leftPush("token", "1");
-        mockMvc.perform(get("/token"))
+        jpaService.saveCoupons("seokkyu","1234");
+
+        mockMvc.perform(get("/token")
+                .flashAttr("event", event))
                 .andExpect(status().isOk())
                 .andExpect(view().name("events/success"))
+
         ;
     }
 
