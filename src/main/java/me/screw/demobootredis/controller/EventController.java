@@ -33,11 +33,10 @@ public class EventController {
     *
     */
     @GetMapping("/init")
-    @ResponseBody
     public String setToken(Model model) throws Exception {
         // initialize tokens at redis
         redisService.initializeToken(10);
-        return "token initialize success!";
+        return "redirect:/form";
     }
 
     @GetMapping("/form")

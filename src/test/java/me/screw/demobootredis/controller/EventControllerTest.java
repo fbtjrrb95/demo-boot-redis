@@ -60,8 +60,7 @@ public class EventControllerTest {
     @Test
     public void setTokenTest() throws Exception {
         mockMvc.perform(get("/init"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("token initialize success!"))
+                .andExpect(status().is3xxRedirection())
         ;
     }
 
