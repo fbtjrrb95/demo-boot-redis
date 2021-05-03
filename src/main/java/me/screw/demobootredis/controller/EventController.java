@@ -75,7 +75,7 @@ public class EventController {
      * @throws Exception
      */
     @GetMapping("/token")
-    public String getToken(Model model) throws Exception {
+    public synchronized String getToken(Model model) throws Exception {
         String couponNumber = redisService.getToken();
         Event event = (Event)model.asMap().get("event");
         if(event == null) {

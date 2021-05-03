@@ -4,8 +4,10 @@ import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.domain.Users;
 import me.screw.demobootredis.repository.CouponRepository;
 import me.screw.demobootredis.repository.UsersRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,10 @@ import java.util.List;
 public class JpaService {
 
     @Autowired
-    private UsersRepository usersRepository;
+    public UsersRepository usersRepository;
 
     @Autowired
-    private CouponRepository couponRepository;
+    public CouponRepository couponRepository;
 
     public Users saveUsers(String username, String password) throws Exception{
         Users users = new Users();
@@ -32,16 +34,16 @@ public class JpaService {
         coupons.setCouponnumber(couponNumber);
         Users users = usersRepository.findByUsername(username);
         coupons.setUsers(users);
-        List<Coupons> list = new ArrayList<>();
-        list.add(coupons);
-        users.setCouponList(list);
         couponRepository.save(coupons);
         return coupons;
     }
 
     public List<Coupons> getCoupons(String username, String password) throws Exception {
         List<Coupons> coupons = couponRepository.findByUsersUsernameAndUsersPassword(username, password);
-//        System.out.println(coupons.get(0).getUsers().getUsername());
+//        Users users = usersRepository.findByUsername(username);
+//        List<Coupons> coupons = users.getCouponList();
+        // 이게 왜 lazy fetch가 안되는 걸까?
+//        String ns = coupons.get(0).getUsers().getUsername();
         return coupons;
     }
 }
