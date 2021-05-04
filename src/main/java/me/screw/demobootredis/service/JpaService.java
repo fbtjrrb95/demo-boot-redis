@@ -4,15 +4,15 @@ import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.domain.Users;
 import me.screw.demobootredis.repository.CouponRepository;
 import me.screw.demobootredis.repository.UsersRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class JpaService {
 
     @Autowired
@@ -40,10 +40,6 @@ public class JpaService {
 
     public List<Coupons> getCoupons(String username, String password) throws Exception {
         List<Coupons> coupons = couponRepository.findByUsersUsernameAndUsersPassword(username, password);
-//        Users users = usersRepository.findByUsername(username);
-//        List<Coupons> coupons = users.getCouponList();
-        // 이게 왜 lazy fetch가 안되는 걸까?
-//        String ns = coupons.get(0).getUsers().getUsername();
         return coupons;
     }
 }
