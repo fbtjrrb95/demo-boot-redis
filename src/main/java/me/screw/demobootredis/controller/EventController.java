@@ -1,6 +1,6 @@
 package me.screw.demobootredis.controller;
 
-import me.screw.demobootredis.Event;
+import me.screw.demobootredis.User;
 import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.service.JpaService;
 import me.screw.demobootredis.service.RedisService;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
-@SessionAttributes("event")
+@SessionAttributes("user")
 public class EventController {
 
-    @ModelAttribute("event")
-    public Event event(){
-        return new Event();
+    @ModelAttribute("user")
+    public User user(){
+        return new User();
     }
 
     @Autowired
@@ -45,9 +45,9 @@ public class EventController {
     }
 
     @PostMapping("/users")
-    public String saveUsers(@ModelAttribute Event event, RedirectAttributes redirectAttributes) throws Exception {
-        String username = event.getUsername();
-        String password = event.getPassword();
+    public String saveUsers(@ModelAttribute User user, RedirectAttributes redirectAttributes) throws Exception {
+        String username = user.getUsername();
+        String password = user.getPassword();
         try {
             boolean isUsersExist = redisService.isExist(username);
             if(isUsersExist) {
@@ -58,7 +58,7 @@ public class EventController {
         }catch (Exception e){
             return "events/form";
         }
-        redirectAttributes.addFlashAttribute("event",event);
+        redirectAttributes.addFlashAttribute("user",user);
         return "redirect:/success/apply";
     }
 
@@ -77,11 +77,11 @@ public class EventController {
     @GetMapping("/token")
     public synchronized String getToken(Model model) throws Exception {
         String couponNumber = redisService.getToken();
-        Event event = (Event)model.asMap().get("event");
-        if(event == null) {
+        User user = (User)model.asMap().get("user");
+        if(user == null) {
             return "events/fail";
         }
-        String username = event.getUsername();
+        String username = user.getUsername();
         if(couponNumber == null) {
             return "events/fail";
         }
@@ -90,14 +90,14 @@ public class EventController {
     }
 
     @GetMapping("/success")
-    public String getToken1(@ModelAttribute Event event) throws Exception {
+    public String getToken1(@ModelAttribute User user) throws Exception {
         return "events/success";
     }
 
     @PostMapping("/coupons")
-    public String getCoupons(@ModelAttribute Event event, Model model){
-        String password = event.getPassword();
-        String username = event.getUsername();
+    public String getCoupons(@ModelAttribute User user, Model model){
+        String password = user.getPassword();
+        String username = user.getUsername();
         try {
             List<Coupons> coupons = jpaService.getCoupons(username, password);
             model.addAttribute("coupons", coupons);

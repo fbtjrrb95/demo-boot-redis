@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Event{
+public class User{
     private String username;
     private String password;
 

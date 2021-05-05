@@ -1,6 +1,6 @@
 package me.screw.demobootredis.controller;
 
-import me.screw.demobootredis.Event;
+import me.screw.demobootredis.User;
 import me.screw.demobootredis.domain.Coupons;
 import me.screw.demobootredis.service.JpaService;
 import org.junit.Test;
@@ -40,9 +40,9 @@ public class EventControllerTest {
 
     @Test
     public void getTokenSuccessTest() throws Exception {
-        Event event = new Event();
-        event.setUsername("seokkyu");
-        event.setPassword("1234");
+        User user = new User();
+        user.setUsername("seokkyu");
+        user.setPassword("1234");
         Coupons coupons = new Coupons();
         coupons.setCouponnumber("coupon_uuid");
 
@@ -50,7 +50,7 @@ public class EventControllerTest {
         jpaService.saveCoupons("seokkyu","1234");
 
         mockMvc.perform(get("/token")
-                .flashAttr("event", event))
+                .flashAttr("event", user))
                 .andExpect(status().isOk())
                 .andExpect(view().name("events/success"))
 
